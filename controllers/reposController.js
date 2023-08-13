@@ -71,19 +71,23 @@ const saveRepo = async (req, res) => {
 
 const getSavedRepo = async (req, res) => {
   const page = parseInt(req.query.page) || 1
-  const limit = parseInt(req.query.limit) || 10
+  const per_page = parseInt(req.query.per_page) || 10
 
   try {
     const items = await Repo.find()
-      .skip((page - 1) * limit)
-      .limit(limit)
+      .skip((page - 1) * per_page)
+      .limit(per_page)
       .exec()
     
-    const totlaItems = await Repo.countDocuments().exec()
+    if (items.length != 0) {
+      const totlaItems = await Repo.countDocuments().exec()
+      const totalPages = Math.ceil(totlaItems / per_page)
 
-    const totalPages = Math.ceil(totlaItems / limit)
+      res.json({ items, totalPages })
+    } else {
+      res.json({ message: 'Репозитории не найдены' })
+    }
     
-    res.json({ items, totalPages })
   } catch (error) {
     console.log(error)
     res.status(500).json({message: 'Ошибка сервера'})
