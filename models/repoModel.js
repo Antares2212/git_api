@@ -10,7 +10,7 @@ const repoModel = new Schema({
   stargazers_count: { type: Number },
   open_issues: { type: Number },
   owner: {
-    type: Array,
+    type: Object,
     id: { type: String },
     login: { type: String },
     avatar: { type: String },
