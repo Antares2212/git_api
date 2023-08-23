@@ -57,7 +57,7 @@ const saveRepo = async (req, res) => {
         })
 
         await repo.save()
-        return res.json({message: 'Репозиторий был успешно сохранен'})
+        return res.json({message: 'Репозиторий был успешно сохранен', data: repo})
       } catch (error) {
         console.log(error)
         res.status(500).send('Серверная ошибка')
